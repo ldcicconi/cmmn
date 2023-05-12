@@ -1,4 +1,4 @@
-package feedhandlers
+package backoff
 
 import (
 	"math/rand"
