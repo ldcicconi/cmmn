@@ -1,3 +1,3 @@
-module github.com/ldcicconi/translator
+module github.com/ldcicconi/cmmn
 
 go 1.19
