@@ -11,6 +11,7 @@ func NewPairTranslator(exchange string) PairTranslator {
 	constructors := map[string]func() PairTranslator{
 		"bitflyer": newBitflyerTranslator,
 		"kraken":   newKrakenTranslator,
+		"sfox":     newSFOXTranslator,
 	}
 
 	constructor, ok := constructors[exchange]
@@ -33,4 +34,8 @@ func newKrakenTranslator() PairTranslator {
 		"btcusd": "XBT/USD",
 		"ethusd": "ETH/USD",
 	})
+}
+
+func newSFOXTranslator() PairTranslator {
+	return NewNoopTranslator()
 }
