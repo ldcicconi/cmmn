@@ -22,12 +22,7 @@ func NewExponentialBackoff(maxBackoffTime, baseWaitTime time.Duration) *Exponent
 }
 
 func (b Exponential) WaitTime(attempt int) time.Duration {
-	if attempt <= 0 {
-		return b.baseWaitTime
-	}
-	expFactor := 1 << uint(attempt)
-	waitTime := time.Duration(expFactor) * b.baseWaitTime
-
+	waitTime := ExponentialBackoffWaitTime(attempt, b.baseWaitTime)
 	// Add jitter to avoid synchronization effects
 	jitter := b.random.Int63n(int64(waitTime) / 2)
 	waitTime += time.Duration(jitter)
@@ -36,4 +31,12 @@ func (b Exponential) WaitTime(attempt int) time.Duration {
 		return b.maxBackoffTime
 	}
 	return waitTime
+}
+
+func ExponentialBackoffWaitTime(attempt int, baseTime time.Duration) time.Duration {
+	if attempt <= 0 {
+		return baseTime
+	}
+	expFactor := 1 << uint(attempt)
+	return time.Duration(expFactor) * baseTime
 }
